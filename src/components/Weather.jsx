@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "../components/Weather.css";
 
-const WeatherApp = () => {
+const Weather = () => {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
@@ -45,7 +46,7 @@ const WeatherApp = () => {
         </button>
       </div>
 
-      {loading && <p className="loading-message">Loading data…</p>} {/* ✅ Using <p> for loading message */}
+      {loading && <p className="loading-message">Loading data…</p>} 
       {error && <p className="error-message">{error}</p>}
 
       {weather && !loading && (
@@ -67,4 +68,4 @@ const WeatherCard = ({ title, value }) => (
   </div>
 );
 
-export default WeatherApp;
+export default Weather;
