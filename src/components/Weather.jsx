@@ -24,7 +24,7 @@ const Weather = () => {
     setLoading(true); // Show loading message
 
     try {
-        const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&q=${city}`);
+        const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=57609c2e5147422caf7183741252603&q=${city}`);
         if (!response.ok) throw new Error("Failed to fetch weather data");
 
         const data = await response.json();
