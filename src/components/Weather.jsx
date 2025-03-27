@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const WeatherApp = () => {
+const Weather = () => {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
@@ -23,7 +23,7 @@ const WeatherApp = () => {
       const response = await axios.get(API_URL);
       setWeather(response.data);
     } catch (error) {
-      setError(alert("Failed to fetch weather data. Please enter a valid city."));
+      setError(alert("Failed to fetch weather data."));
       setWeather(null);
     }
 
@@ -67,4 +67,4 @@ const WeatherCard = ({ title, value }) => (
   </div>
 );
 
-export default WeatherApp;
+export default Weather;
