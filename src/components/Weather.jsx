@@ -24,7 +24,7 @@ const Weather = () => {
       const response = await axios.get(API_URL);
       setWeather(response.data);
     } catch (error) {
-      setError("Failed to fetch weather data. Please enter a valid city.");
+      setError( alert("Failed to fetch weather data"));
       setWeather(null);
     }
 
