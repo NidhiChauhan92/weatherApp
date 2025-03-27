@@ -30,7 +30,7 @@ const Weather = () => {
         }, 500);
       } catch (error) {
         setTimeout(() => {
-          setError("Failed to fetch weather data. Please enter a valid city.");
+          setError(alert("Failed to fetch weather data."));
           setWeather(null);
           setLoading(false); // ✅ Hide loading on error
         }, 500);
