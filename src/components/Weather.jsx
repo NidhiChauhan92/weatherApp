@@ -20,16 +20,24 @@ const Weather = () => {
     const API_KEY = "57609c2e5147422caf7183741252603"; // Replace with your OpenWeather API Key
     const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
 
-    try {
-      const response = await axios.get(API_URL);
-      setWeather(response.data);
-    } catch (error) {
-      setError("Failed to fetch weather data. Please enter a valid city.");
-      setWeather(null);
-    }
+    if (!city.trim()) return;
+    setLoading(true); // Show loading message
 
-    setLoading(false); // Hide loading text
-  };
+    try {
+        const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&q=${city}`);
+        if (!response.ok) throw new Error("Failed to fetch weather data");
+
+        const data = await response.json();
+
+        // Add a 500ms delay before updating the weather state
+        setTimeout(() => {
+            setWeather(data);
+            setLoading(false); // Hide loading message after setting data
+        }, 500);
+    } catch (error) {
+        alert("Failed to fetch weather data");
+        setLoading(false); // Hide loading if request fails
+    }
 
   return (
     <div className="weather-container">
