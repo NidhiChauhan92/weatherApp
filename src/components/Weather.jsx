@@ -35,7 +35,7 @@ const Weather = () => {
             setLoading(false); // Hide loading message after setting data
         }, 500);
     } catch (error) {
-        alert("Failed to fetch weather data");
+        setError(alert("Failed to fetch weather data"));
         setLoading(false); // Hide loading if request fails
     }
 
@@ -55,7 +55,7 @@ const Weather = () => {
       </div>
 
       {loading && <p className="loading-message">Loading data…</p>} 
-      {error && <p className="error-message">{ alert("Failed to fetch weather data")}</p>}
+      {error && <p className="error-message">{error}</p>}
 
       {weather && !loading && (
         <div className="weather-cards"> {/* ✅ Using "weather-cards" class */}
@@ -75,5 +75,5 @@ const WeatherCard = ({ title, value }) => (
     <p>{value}</p>
   </div>
 );
-
+}
 export default Weather;
