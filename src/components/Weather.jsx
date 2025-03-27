@@ -26,13 +26,13 @@ const Weather = () => {
         setTimeout(() => {
           setWeather(response.data);
           setLoading(false); 
-        }, 500);
+        }, 1000);
       } catch (error) {
         setTimeout(() => {
           setError(alert("Failed to fetch weather data."));
           setWeather(null);
           setLoading(false); 
-        }, 500);
+        }, 1000);
       }
   };
 
