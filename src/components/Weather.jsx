@@ -16,7 +16,7 @@ const WeatherApp = () => {
     setError("");
     setLoading(true); // Show loading text
 
-    const API_KEY = "YOUR_API_KEY"; // Replace with your OpenWeather API Key
+    const API_KEY = "57609c2e5147422caf7183741252603"; // Replace with your OpenWeather API Key
     const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
 
     try {
