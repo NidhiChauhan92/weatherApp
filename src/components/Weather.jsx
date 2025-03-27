@@ -1,71 +1,70 @@
 import React, { useState } from "react";
-import "./Weather.css";
+import axios from "axios";
 
-const Weather = () => {
+const WeatherApp = () => {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
   const fetchWeather = async () => {
-    if (!city) return alert("Please enter a city name!");
+    if (!city) {
+      setError("Please enter a city name");
+      return;
+    }
 
-    setLoading(true);
-    setWeather(null); // Reset previous data
+    setError("");
+    setLoading(true); // Show loading text
+
+    const API_KEY = "57609c2e5147422caf7183741252603"; // Replace with your OpenWeather API Key
+    const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
 
     try {
-      const response = await fetch(
-        `https://api.weatherapi.com/v1/current.json?key=57609c2e5147422caf7183741252603&q=${city}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Invalid city");
-      }
-
-      const data = await response.json();
-      setWeather(data);
+      const response = await axios.get(API_URL);
+      setWeather(response.data);
     } catch (error) {
-      alert("Failed to fetch weather data");
-    } finally {
-      setLoading(false);
+      setError(alert("Failed to fetch weather data. Please enter a valid city."));
+      setWeather(null);
     }
+
+    setLoading(false); // Hide loading text
   };
 
   return (
     <div className="weather-container">
-      <div className="search-bar">
+      <div className="search-box">
         <input
           type="text"
           placeholder="Enter city name..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
+          className="search-input"
         />
-        <button onClick={fetchWeather}>Search</button>
+        <button onClick={fetchWeather} className="search-button">
+          Search
+        </button>
       </div>
 
-      {loading && <p>Loading data…</p>}
+      {loading && <p className="loading-message">Loading data…</p>} 
+      {error && <p className="error-message">{error}</p>}
 
-      {weather && (
-        <div className="weather-cards">
-          <div className="weather-card">
-            <h3>Temperature</h3>
-            <p>{weather.current.temp_c}°C</p>
-          </div>
-          <div className="weather-card">
-            <h3>Humidity</h3>
-            <p>{weather.current.humidity}%</p>
-          </div>
-          <div className="weather-card">
-            <h3>Condition</h3>
-            <p>{weather.current.condition.text}</p>
-          </div>
-          <div className="weather-card">
-            <h3>Wind Speed</h3>
-            <p>{weather.current.wind_kph} kph</p>
-          </div>
+      {weather && !loading && (
+        <div className="weather-cards"> 
+          <WeatherCard title="Temperature" value={`${weather.current.temp_c}°C`} />
+          <WeatherCard title="Humidity" value={`${weather.current.humidity}%`} />
+          <WeatherCard title="Condition" value={weather.current.condition.text} />
+          <WeatherCard title="Wind Speed" value={`${weather.current.wind_kph} kph`} />
         </div>
       )}
     </div>
   );
 };
 
-export default Weather;
+const WeatherCard = ({ title, value }) => (
+  <div className="weather-card"> 
+    <h3>{title}</h3>
+    <p>{value}</p>
+  </div>
+);
+
+export default WeatherApp;
