@@ -55,7 +55,7 @@ const Weather = () => {
       </div>
 
       {loading && <p className="loading-message">Loading data…</p>} 
-      {error && <p className="error-message">{error}</p>}
+      {error && <p className="error-message">{ alert("Failed to fetch weather data")}</p>}
 
       {weather && !loading && (
         <div className="weather-cards"> {/* ✅ Using "weather-cards" class */}
