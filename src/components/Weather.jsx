@@ -51,7 +51,8 @@ const Weather = () => {
         </button>
       </div>
 
-      {loading && <p className="loading-message">Loading data…</p>} 
+      {loading && <p className="loading-message">Loading data...</p>} 
+
       {error && <p className="error-message">{error}</p>}
 
       {weather && !loading && (
