@@ -21,14 +21,20 @@ const Weather = () => {
     const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
 
     try {
-      const response = await axios.get(API_URL);
-      setWeather(response.data);
-    } catch (error) {
-      setError(alert("Failed to fetch weather data."));
-      setWeather(null);
-    }
-
-    setLoading(false); // Hide loading text
+        const response = await axios.get(API_URL);
+    
+        // ✅ Add a 500ms delay to simulate a real-world API call
+        setTimeout(() => {
+          setWeather(response.data);
+          setLoading(false); // ✅ Hide loading after setting weather
+        }, 500);
+      } catch (error) {
+        setTimeout(() => {
+          setError("Failed to fetch weather data. Please enter a valid city.");
+          setWeather(null);
+          setLoading(false); // ✅ Hide loading on error
+        }, 500);
+      }
   };
 
   return (
