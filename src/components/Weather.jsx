@@ -1,40 +1,70 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-function WeatherApp() {
-    const [city, setCity] = useState("");
-    const [weather, setWeather] = useState(null);
-    const [loading, setLoading] = useState(false);
+const WeatherApp = () => {
+  const [city, setCity] = useState("");
+  const [weather, setWeather] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
-    const fetchWeather = async () => {
-        if (!city.trim()) return;
-        setLoading(true); // Show loading message
-        try {
-            const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=57609c2e5147422caf7183741252603&q=${city}`);
-            if (!response.ok) throw new Error("Failed to fetch weather data");
-            const data = await response.json();
-            setWeather(data);
-        } catch (error) {
-            alert("Failed to fetch weather data");
-        } finally {
-            setLoading(false); // Hide loading message
-        }
-    };
+  const fetchWeather = async () => {
+    if (!city) {
+      setError("Please enter a city name");
+      return;
+    }
 
-    return (
-        <div>
-            <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Enter city" />
-            <button onClick={fetchWeather}>Search</button>
-            {loading && <p>Loading data…</p>}
-            {weather && (
-                <div className="weather-cards">
-                    <div className="weather-card"><strong>Temperature:</strong> {weather.current.temp_c}°C</div>
-                    <div className="weather-card"><strong>Humidity:</strong> {weather.current.humidity}%</div>
-                    <div className="weather-card"><strong>Condition:</strong> {weather.current.condition.text}</div>
-                    <div className="weather-card"><strong>Wind Speed:</strong> {weather.current.wind_kph} kph</div>
-                </div>
-            )}
+    setError("");
+    setLoading(true); // Show loading text
+
+    const API_KEY = "YOUR_API_KEY"; // Replace with your OpenWeather API Key
+    const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
+
+    try {
+      const response = await axios.get(API_URL);
+      setWeather(response.data);
+    } catch (error) {
+      setError("Failed to fetch weather data. Please enter a valid city.");
+      setWeather(null);
+    }
+
+    setLoading(false); // Hide loading text
+  };
+
+  return (
+    <div className="weather-container">
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="Enter city name..."
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          className="search-input"
+        />
+        <button onClick={fetchWeather} className="search-button">
+          Search
+        </button>
+      </div>
+
+      {loading && <p className="loading-message">Loading data…</p>} {/* ✅ Using <p> for loading message */}
+      {error && <p className="error-message">{error}</p>}
+
+      {weather && !loading && (
+        <div className="weather-cards"> {/* ✅ Using "weather-cards" class */}
+          <WeatherCard title="Temperature" value={`${weather.current.temp_c}°C`} />
+          <WeatherCard title="Humidity" value={`${weather.current.humidity}%`} />
+          <WeatherCard title="Condition" value={weather.current.condition.text} />
+          <WeatherCard title="Wind Speed" value={`${weather.current.wind_kph} kph`} />
         </div>
-    );
-}
+      )}
+    </div>
+  );
+};
+
+const WeatherCard = ({ title, value }) => (
+  <div className="weather-card"> {/* ✅ Using "weather-card" class */}
+    <h3>{title}</h3>
+    <p>{value}</p>
+  </div>
+);
 
 export default WeatherApp;
